@@ -1,0 +1,21 @@
+shinken (0.8.1-1) natty; urgency=low
+
+  * magic!
+
+ -- Peter Woodman <peter@shortbus.org>  Tue, 01 Nov 2011 13:37:28 -0700
+
+shinken (0.6.5-2) unstable; urgency=low
+
+  * Fixing long description (Closes: #642254)
+  * Fix init scripts (Closes: #642297)
+  * Adds nagios group if not existing,
+    Add shinken to the nagios group (Closes: #642438)
+
+ -- Arthur Gautier <superbaloo+debian@superbaloo.net>  Thu, 22 Sep 2011 22:48:24 +0200
+
+shinken (0.6.5-1) unstable; urgency=low
+
+  * Initial release (Closes: #599073) 
+
+ -- Arthur Gautier <superbaloo+debian@superbaloo.net>  Thu, 15 Sep 2011 14:00:09 +0200
+
