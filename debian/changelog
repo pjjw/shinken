@@ -1,3 +1,212 @@
+shinken (0.8.1-2) natty; urgency=low
+
+  [ Frescha ]
+  * Solved Issue #15
+
+  [ david hannequin ]
+  * Fix permission.
+
+  [ naparuba ]
+  * fix: file rights.
+
+  [ Naparuba ]
+  * Add : better logging for warning in host/service conf, and npcd configuration too.
+
+  [ Nicolas DUPEUX ]
+  * Fix spelling
+
+  [ Naparuba ]
+  * Solved Issue #15
+
+  [ Frescha ]
+  * Solved Issue #15
+
+  [ david hannequin ]
+  * Fix permission.
+
+  [ naparuba ]
+  * fix: file rights.
+
+  [ Naparuba ]
+  * Add : better logging for warning in host/service conf, and npcd configuration too.
+
+  [ Nicolas DUPEUX ]
+  * Fix spelling
+
+  [ Naparuba ]
+  * Clean : useless code and comment.
+  * Fix : the WebUI now exit when the brok thread got a problem.
+
+  [ Nicolas DUPEUX ]
+  * A better safe_print for you and for me ....
+  * Don't print newline between dot in receiver daemon
+
+  [ Naparuba ]
+  * Fix : useless and dangerous str in redis module. And a strange erorrs in safe_print, I think it should be in encode no?
+
+  [ Nicolas DUPEUX ]
+  * ignore conversion errors in safe_print
+
+  [ Naparuba ]
+  * Add: Graphite broker backend to export perfdata.
+
+  [ david hannequin ]
+  * New spec file
+
+  [ Frescha ]
+  * Initial release of a detailsite mockup with live data
+  * Fix: 'SOLVE THIS' highlight box @ mockup
+
+  [ Naparuba ]
+  * Add : by default the poller will use all the CPUs available.
+  * fix : test end to end was bad on one cpu server with last commit.
+
+  [ olivierHa ]
+  * fix encoding stuff
+
+  [ Naparuba ]
+  * Add : UI PNP module. Need to put graph call in a graph modules too.
+  * Fix : PNP UI links.
+  * Add : add graph time selection in the detail page.
+  * Fix : do not think the pnp is with mod_rewrite enabled.
+
+  [ Frescha ]
+  * Change h1 position @ detailsite mockup
+  * Add \"SOLVE THIS\"-Icon @ Detailsite Mockup
+  * Add Graph Tab @ Detailsite mockup
+  * Add missing <p> attribute
+
+  [ Naparuba ]
+  * Add : Brok Queue watchdog for satellites, activate for Broker by default at 100000 broks to kill/restart the module..
+  * Add : Graphite graph backend.
+  * Add : tips on the eltgraph view.
+  * Fix: graphite is not by default on 81 :p
+  * Add : if the run/var dir are missing, try to create them in the init.d script.
+
+  [ olivierHa ]
+  * add module to deal with flat file dependencies
+  * fix acknowledge typo
+  * fix typos
+
+  [ nap ]
+  * Add: reactionner can run under android.
+
+  [ Naparuba ]
+  * *Fix : module_type got not give to notification. Not good. *Add : android SMS module.
+  * Enh : better SMS things definitions.
+
+  [ root ]
+  * Skonf is a class dedicated to shinken configuration.
+  * Test suite for Skonf class
+
+  [ Naparuba ]
+  * Fix : some utf8 stuff.
+  * Fix : forgot a sample host file.
+
+  [ Gerhard Lausser ]
+  * *use StringIO to read configuration files into a string (much faster with lots of config files)
+  * *add a warning to test_livestatus_db (it fails because of the daylight-time change)
+
+  [ Frescha ]
+  * Clean up impact view
+
+  [ nap ]
+  * * Fix : android sms send module * Add : first attemps to read sms for acks
+
+  [ Frescha ]
+  * Clean up impact view
+
+  [ root ]
+  * FIX: proxy support and python-setuptools installation on RHEL/CENTOS 6
+
+  [ Naparuba ]
+  * *Add : Try to check for dead queue threads. If so, give a change for the tread to restart. *Enh : change the Manager.list() into a simple Queue().
+  * Fix : test end to end for changing Manager into Queue, so process management into thread one.
+
+  [ david hannequin ]
+  * Add mail python script
+  * Add missing file
+
+  [ Naparuba ]
+  * Add : android module can now raise external command and send it back to reactionner, then the arbiter eat it.
+  * Fix : (reproted by : darkweaver87) somethimes we got a bad formed external command. If so, bailout and warn in debug mode.
+
+  [ david hannequin ]
+  * Fix sender.
+
+  [ Naparuba ]
+  * Add : first perf print version.
+  * Clean : useless css things.
+
+  [ Frescha ]
+  * Change the scale of the impact view divs
+
+  [ root ]
+  * FIX : PROXY should not be activated by default
+  * FIX #61 : Misspelled module name and type in shinken-specific.cfg
+
+  [ Frescha ]
+  * Change overview container scale @ detailview mockup
+
+  [ root ]
+  * FIX #62: htpasswd.users file not correctly updated at installation
+  * FIX: default iface should be eth0
+
+  [ Naparuba ]
+  * Fix : (reported by : DGuenault) hack_poller_tag_by_macros was not applying poller_tag to commands, only root objects, but after the command tag inheritance, so the checks were not taggued.
+  * Fix : test_timeout was still using a Manager and not a Queue now.
+  * Add : helper class for parsing perfdata metrics.
+  * Add : PerfDatas parser class that is the upper level of Metric.
+  * Fix : UI page navigation should not propose page too high if not need.
+  * Add : first attempt of a perfometer backend. It's more a poc than a prodcode in fact, should put all of this in modules with a good and simple API.
+  * Enh : the Service-perfdata module now open/close the perfdata file each second. So it's compatible with tools like Centreon that move it (and so the module can't keep a file desc on it)
+  * * Fix : memcache and redis retention modules. They were loading notifications->contacts->commands but this class got slots but no __getstate__, so it was a real problem.
+  * Fix: jenkins is not happy with utf8 print...
+  * Enh : when there is a dispatching problem, the arbiter send and send again the same configuration to satellites. Now it will bypass the resend of the same conf. Less verbose too.
+  * Fix : the last enhancement was a bit too optimist. Mush find a better way for conf identification than just ids.
+  * *Fix : with new pickle things for command and commandcall, the pickle files were not compatible from 0.8 version. Not good! *Add : better error text when the pickle load got an error.
+
+  [ nap ]
+  * Add : gesture canvas as smaller and visible.
+
+  [ root ]
+  * FIX : bad path for config.files
+
+  [ nap ]
+  * Fix : canvas in android
+
+  [ Frescha ]
+  * Add icons @ detailsite mockup
+
+  [ root ]
+  * Clean up things
+  * Add maccros support for skonf. Fix lot of bugs
+  * Started to implement some modification in shinken.sh due to heavy modifications in skonf
+
+  [ Frescha ]
+  * Add address to the eltdetail.tpl
+  * Add iconset for mockup
+  * Add mini menu @ detail mockup
+  * Add a bunch of mockups
+
+  [ David GUENAULT ]
+  * Fix : do not insert directive value if it allready exist ...
+  * Removed output
+  * Started to fix duplicate entries. This should be fixed soon
+
+  [ Naparuba ]
+  * Fix : utf8 names in the UI
+
+  [ David GUENAULT ]
+  * FIX : missing python module for skonf in prerequisites
+  * Add support for shinken configuration deployment
+  * FIX : problem with sync
+
+  [ Peter Woodman ]
+  * fix crash bug when timezone set in config file
+
+ -- Peter Woodman <peter@shortbus.org>  Mon, 07 Nov 2011 17:48:27 -0800
+
 shinken (0.8.1-1) natty; urgency=low
 
   * magic!
