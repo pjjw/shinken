@@ -5,7 +5,7 @@
 %top_right_banner_state = datamgr.get_overall_state()
 
 
-%rebase layout title='All problems', top_right_banner_state=top_right_banner_state, js=['problems/js/accordion.js', 'problems/js/autocompleter.js', 'problems/js/autocompleter.Request.js', 'problems/js/autocompleterObserver.js'], css=['problems/css/accordion.css', 'problems/css/pagenavi.css', 'problems/css/autocompleter.css'], refresh=True, menu_part='/'+page, user=user
+%rebase layout title='All problems', top_right_banner_state=top_right_banner_state, js=['problems/js/accordion.js', 'problems/js/autocompleter.js', 'problems/js/autocompleter.Request.js', 'problems/js/autocompleterObserver.js'], css=['problems/css/accordion.css', 'problems/css/pagenavi.css', 'problems/css/autocompleter.css', 'problems/css/perfometer.css'], refresh=True, menu_part='/'+page, user=user
 
 
 %# " If the auth got problem, we bail out"
@@ -124,8 +124,8 @@ document.addEvent('domready', function() {
 	<a href="#" onclick="recheck_now_all()"><img src="/static/images/big_refresh.png" alt="refresh"/></a>
       </li>
       <li>
-	<span>Acknoledge</span>
-	<a href="#" onclick="acknoledge_all()"><img src="/static/images/big_ack.png" alt="acknowledge"/></a>
+	<span>Acknowledge</span>
+	<a href="#" onclick="acknowledge_all()"><img src="/static/images/big_ack.png" alt="acknowledge"/></a>
       </li>
       
     </ul>
@@ -219,17 +219,22 @@ document.addEvent('domready', function() {
 		%else:
 		   <td class="tdBorderTop tdBorderLeft tdCriticity" style="width:350px;"> {{pb.output}}</td>
 		%end
+		<td class="perfometer">
+		  {{!helper.get_perfometer(pb)}}
+		</td>
 		<td class="tdBorderLeft tdCriticity opacity_hover shortdesc" style="max-width:20px;" onclick="show_detail('{{pb.get_full_name()}}')"> <img src="/static/images/expand.png" alt="expand" /> </td>
+		
 		</tr>
+	      
              </table>
 	  </div>  
 	  %# " We put actions buttons with a opacity hover effect, so they won't be too visible"
-	  <div class="opacity_hover">
+	  <div class="opacity_hover" >
 	    <div style="float:right;">
 	      <a href="#" onclick="try_to_fix('{{pb.get_full_name()}}')">{{!helper.get_button('Fix!', img='/static/images/enabled.png')}}</a>
 	    </div>
 	    <div style="float:right;">
-	      <a href="#" onclick="acknoledge('{{pb.get_full_name()}}')">{{!helper.get_button('Ack', img='/static/images/wrench.png')}}</a>
+	      <a href="#" onclick="acknowledge('{{pb.get_full_name()}}')">{{!helper.get_button('Ack', img='/static/images/wrench.png')}}</a>
 	    </div>
 	    <div style="float:right;">
 	      <a href="#" onclick="recheck_now('{{pb.get_full_name()}}')">{{!helper.get_button('Recheck', img='/static/images/delay.gif')}}</a>

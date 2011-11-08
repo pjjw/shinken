@@ -228,10 +228,10 @@ class Host(SchedulingItem):
         # Here it's the elements we are depending on
         # so our parents as network relation, or a host
         # we are depending in a hostdependency
-        # or even if we are businesss based.
+        # or even if we are business based.
         'parent_dependencies' : StringProp(brok_transformation=to_svc_hst_distinct_lists, default=set(), fill_brok=['full_status']),
-        # Here it's the guys taht depend on us. So it's the total
-        # oposite of the parent_dependencies 
+        # Here it's the guys that depend on us. So it's the total
+        # opposite of the parent_dependencies 
         'child_dependencies':   StringProp(
             brok_transformation=to_svc_hst_distinct_lists,
             default=set(),
@@ -264,7 +264,7 @@ class Host(SchedulingItem):
         # Our Dependency node for the business rule
         'business_rule' : StringProp(default=None),
         
-        # Manage the unkown/unreach during hard state
+        # Manage the unknown/unreach during hard state
         # From now its not really used
         'in_hard_unknown_reach_phase' : BoolProp(default=False, retention=True),
         'was_in_hard_unknown_reach_phase' : BoolProp(default=False, retention=True),
@@ -365,6 +365,8 @@ class Host(SchedulingItem):
         state = True #guilty or not? :)
         cls = self.__class__
 
+        source = getattr(self, 'imported_from', 'unknown')
+
         special_properties = ['check_period', 'notification_interval', 'check_period',
                               'notification_period']
         for prop, entry in cls.properties.items():
@@ -384,7 +386,7 @@ class Host(SchedulingItem):
 
         # Ok now we manage special cases...
         if self.notifications_enabled and self.contacts == []:
-            logger.log("Waring : the host %s do not have contacts nor contact_groups" % self.get_name())
+            logger.log("Waring : the host %s do not have contacts nor contact_groups in (%s)" % (self.get_name(), source))
         
         if getattr(self, 'check_command', None) is None:
             logger.log("%s : I've got no check_command" % self.get_name())

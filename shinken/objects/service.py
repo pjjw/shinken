@@ -234,11 +234,11 @@ class Service(SchedulingItem):
         # we are depending in a hostdependency
         # or even if we are businesss based.
         'parent_dependencies': StringProp(default=set(), brok_transformation=to_svc_hst_distinct_lists, fill_brok=['full_status']),
-        # Here it's the guys taht depend on us. So it's the total
-        # oposite of the parent_dependencies 
+        # Here it's the guys that depend on us. So it's the total
+        # opposite of the parent_dependencies 
         'child_dependencies': StringProp(brok_transformation=to_svc_hst_distinct_lists, default=set(), fill_brok=['full_status']),
 
-        # Manage the unkown/unreach during hard state
+        # Manage the unknown/unreach during hard state
         'in_hard_unknown_reach_phase': BoolProp(default=False, retention=True),
         'was_in_hard_unknown_reach_phase': BoolProp(default=False, retention=True),
         'state_before_hard_unknown_reach_phase': StringProp(default='OK', retention=True),
@@ -347,6 +347,8 @@ class Service(SchedulingItem):
         state = True # guilty or not? :)
         cls = self.__class__
 
+        source = getattr(self, 'imported_from', 'unknown')
+
         desc = getattr(self, 'service_description', 'unamed')
         hname = getattr(self, 'host_name', 'unamed')
 
@@ -371,7 +373,7 @@ class Service(SchedulingItem):
 
         # Ok now we manage special cases...
         if self.notifications_enabled and self.contacts == []:
-            logger.log("Warning The service '%s' in the host '%s' do not have contacts nor contact_groups" % (desc, hname))
+            logger.log("Warning The service '%s' in the host '%s' do not have contacts nor contact_groups in '%s'" % (desc, hname, source))
 
         if not hasattr(self, 'check_command'):
             logger.log("%s : I've got no check_command" % self.get_name())

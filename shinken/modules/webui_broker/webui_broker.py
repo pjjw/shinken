@@ -43,6 +43,7 @@ from shinken.misc.regenerator import Regenerator
 from shinken.log import logger
 from shinken.modulesmanager import ModulesManager
 from shinken.daemon import Daemon
+from shinken.util import safe_print
 
 #Local import
 from datamanager import datamgr
@@ -221,6 +222,13 @@ class Webui_broker(BaseModule, Daemon):
                        logger.log("[%s] Exception type : %s" % (self.name, type(exp)))
                        logger.log("Back trace of this kill: %s" % (traceback.format_exc()))
                        self.modules_manager.set_to_restart(mod)
+           except Exception, exp:            
+               msg = Message(id=0, type='ICrash', data={'name' : self.get_name(), 'exception' : exp, 'trace' : traceback.format_exc()})
+               self.from_q.put(msg)
+               # wait 2 sec so we know that the broker got our message, and die
+               time.sleep(2)
+               # No need to raise here, we are in a thread, exit!
+               os._exit(2)
            finally:
                #print "Release data lock"
                self.global_lock.release()
@@ -388,3 +396,28 @@ class Webui_broker(BaseModule, Daemon):
 
         c = self.datamgr.get_contact(user_name)
         return c
+
+
+
+    # Try to got for an element the graphs uris from modules
+    def get_graph_uris(self, elt, graphstart, graphend):
+        safe_print("Checking graph uris ", elt.get_full_name())
+
+        uris = []
+        for mod in self.modules_manager.get_internal_instances():
+            try:
+                f = getattr(mod, 'get_graph_uris', None)
+                safe_print("Get graph uris ", f, "from", mod.get_name())
+                if f and callable(f):
+                    r = f(elt, graphstart, graphend)
+                    uris.extend(r)
+            except Exception , exp:
+                print exp.__dict__
+                logger.log("[%s] Warning : The mod %s raise an exception: %s, I'm tagging it to restart later" % (self.name, mod.get_name(),str(exp)))
+                logger.log("[%s] Exception type : %s" % (self.name, type(exp)))
+                logger.log("Back trace of this kill: %s" % (traceback.format_exc()))
+                self.modules_manager.set_to_restart(mod)        
+
+        safe_print("Will return", uris)
+        # Ok if we got a real contact, and if a module auth it
+        return uris

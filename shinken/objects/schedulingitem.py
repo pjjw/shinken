@@ -1023,7 +1023,6 @@ class SchedulingItem(Item):
 
         # We search since when we are in notification for escalations
         # that are based on time
-        in_notif_time = cls.interval_length * self.first_notification_delay + (n.notif_nb-1) * self.notification_interval
         in_notif_time = time.time() - n.creation_time
 
         # Check is an escalation match the current_notification_number
@@ -1169,7 +1168,7 @@ class SchedulingItem(Item):
                 rt = cmd.reactionner_tag
                 child_n = Notification(n.type, 'scheduled', 'VOID', cmd, self,
                     contact, n.t_to_go, timeout=cls.notification_timeout,
-                    notif_nb=n.notif_nb, reactionner_tag=rt )
+                    notif_nb=n.notif_nb, reactionner_tag=rt, module_type=cmd.module_type )
                 if not self.notification_is_blocked_by_contact(child_n, contact):
                     # Update the notification with fresh status information
                     # of the item. Example: during the notification_delay

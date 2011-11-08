@@ -252,12 +252,14 @@ class Broker(BaseSatellite):
         # internal modules
         self.broks.extend(broks)
 
+
     # Each turn we get all broks from
     # self.broks_internal_raised and we put them in
     # self.broks
     def interger_internal_broks(self):
         self.add_broks_to_queue(self.broks_internal_raised)
         self.broks_internal_raised = []
+
 
     # Get 'objects' from external modules
     # from now nobody use it, but it can be useful
@@ -327,6 +329,7 @@ class Broker(BaseSatellite):
     def get_retention_data(self):
         return self.broks
 
+
     # Get back our broks from a retention module
     def restore_retention_data(self, data):
         self.broks.extend(data)
@@ -358,7 +361,18 @@ class Broker(BaseSatellite):
         # self.schedulers.clear()
         for sched_id in conf['schedulers']:
             # Must look if we already have it to do nto overdie our broks
-            already_got = sched_id in self.schedulers
+            already_got = False
+
+            # We can already got this conf id, but with another address
+            if sched_id in self.schedulers:
+               new_addr = conf['schedulers'][sched_id]['address']
+               old_addr = self.schedulers[sched_id]['address']
+               new_port = conf['schedulers'][sched_id]['port']
+               old_port = self.schedulers[sched_id]['port']
+               # Should got all the same to be ok :)
+               if new_addr == old_addr and new_port == old_port:
+                  already_got = True
+
             if already_got:
                 broks = self.schedulers[sched_id]['broks']
                 running_id = self.schedulers[sched_id]['running_id']
@@ -588,8 +602,11 @@ class Broker(BaseSatellite):
                 end = time.time()
                 self.timeout = self.timeout - (end - begin)
             self.timeout = 1.0
+
             # print "get enw broks watch new conf 1 : end", len(self.broks)
 
+        # Say to modules it's a new tick :)
+        self.hook_point('tick')
 
     #  Main function, will loop forever
     def main(self):
@@ -626,8 +643,8 @@ class Broker(BaseSatellite):
             self.do_mainloop()
 
         except Exception, exp:
-            logger.log("CRITICAL ERROR : I got an non recoverable error. I must exit")
-            logger.log("You can log a bug ticket at https://sourceforge.net/apps/trac/shinken/newticket for geting help")
+            logger.log("CRITICAL ERROR: I got an unrecoverable error. I have to exit")
+            logger.log("You can log a bug ticket at https://sourceforge.net/apps/trac/shinken/newticket to get help")
             logger.log("Back trace of it: %s" % (traceback.format_exc()))
             raise
 
